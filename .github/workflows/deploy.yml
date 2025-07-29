@@ -27,9 +27,15 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Deploy to Lambda
+      - name: Deploy to Lambda (ocrProcessor)
         run: |
           aws lambda update-function-code \
             --function-name ocrProcessor \
             --zip-file fileb://receiptScanner.zip
+
+      - name: Deploy to Lambda (generatePresignedUrl)
+        run: |
+          aws lambda update-function-code \
+            --function-name generatePresignedUrl \
+            --zip-file fileb://presignedUrl.zip
 
