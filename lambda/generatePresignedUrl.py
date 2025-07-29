@@ -5,7 +5,7 @@ import urllib.parse
 
 s3 = boto3.client("s3")
 BUCKET = "elo-receipts"
-
+#
 ALLOWED_EXTENSIONS = ('.jpg', '.jpeg', '.png')
 
 def lambda_handler(event, context):
