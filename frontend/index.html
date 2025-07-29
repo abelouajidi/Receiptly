@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Receipty — Smart Receipt Parser</title>
+  <title>Receiptly — Smart Receipt Parser</title>
   <style>
     body {
       margin: 0;
@@ -25,11 +25,12 @@
       max-width: 400px;
       width: 100%;
       border: 2px dashed #3d5472;
+      cursor: pointer;
     }
 
     .logo {
       width: 100%;
-      height: 150px; 
+      height: 150px;
       object-fit: cover;
       object-position: center;
       display: block;
@@ -76,12 +77,47 @@
 </head>
 <body>
   <div class="upload-container" onclick="document.getElementById('file-upload').click();">
-    <img src="logo.png" alt="Receipty Logo" class="logo"/>
+    <img src="logo.png" alt="Receiptly Logo" class="logo"/>
     <div class="upload-icon">⬆️</div>
     <div class="upload-text">DRAG & DROP</div>
     <div class="sub-text">TO UPLOAD</div>
     <input type="file" id="file-upload" class="file-input" />
     <button class="upload-btn">OR, SELECT FILES</button>
   </div>
+
+  <script>
+    const apiEndpoint = 'https://0jbql9s6vc.execute-api.us-east-1.amazonaws.com/upload-url';
+
+    async function uploadFile(file) {
+      const fileName = encodeURIComponent(file.name);
+
+      try {
+        const res = await fetch(`${apiEndpoint}?filename=${fileName}`);
+        const data = await res.json();
+
+        if (!data.upload_url) {
+          throw new Error(data.error || 'Could not get upload URL');
+        }
+
+        const upload = await fetch(data.upload_url, {
+          method: 'PUT',
+          body: file
+        });
+
+        if (!upload.ok) {
+          throw new Error('Upload failed');
+        }
+
+        alert('✅ Upload successful!');
+      } catch (err) {
+        alert(`❌ Upload failed: ${err.message}`);
+      }
+    }
+
+    document.getElementById('file-upload').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) uploadFile(file);
+    });
+  </script>
 </body>
 </html>
