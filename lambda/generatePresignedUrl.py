@@ -38,6 +38,7 @@ def lambda_handler(event, context):
             "statusCode": 200,
             "headers": {
 
+                
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*"  # dev only
             },
