@@ -24,7 +24,7 @@
       text-align: center;
       max-width: 400px;
       width: 100%;
-      border: 2px dashed #3d5472;
+      border: 2px;
       cursor: pointer;
     }
 
@@ -34,12 +34,6 @@
       object-fit: cover;
       object-position: center;
       display: block;
-    }
-
-    .upload-icon {
-      font-size: 48px;
-      color: #5c9eff;
-      margin-bottom: 16px;
     }
 
     .upload-text {
@@ -78,7 +72,6 @@
 <body>
   <div class="upload-container" onclick="document.getElementById('file-upload').click();">
     <img src="logo.png" alt="Receiptly Logo" class="logo"/>
-    <div class="upload-icon">⬆️</div>
     <div class="upload-text">DRAG & DROP</div>
     <div class="sub-text">TO UPLOAD</div>
     <input type="file" id="file-upload" class="file-input" />
