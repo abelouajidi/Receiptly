@@ -101,9 +101,10 @@
           throw new Error(data.error || 'Could not get upload URL');
         }
 
-        const upload = await fetch(data.upload_url, {
-          method: 'PUT',
-          body: file
+        const upload = await fetch(url, {
+          method: "PUT",
+          body: file  // ✅ No headers = match pre-signed signature
+        });
         });
 
         console.log("📦 Upload response:", upload);
