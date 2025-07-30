@@ -93,18 +93,21 @@
       console.log("📤 Selected file:", file.name);
 
       try {
+        // Step 1: Get the pre-signed URL
         const res = await fetch(`${apiEndpoint}?filename=${fileName}`);
         const data = await res.json();
-        console.log("🎯 Received pre-signed URL:", data.upload_url);
+        const uploadUrl = data.upload_url;
 
-        if (!data.upload_url) {
+        console.log("🎯 Received pre-signed URL:", uploadUrl);
+
+        if (!uploadUrl) {
           throw new Error(data.error || 'Could not get upload URL');
         }
 
-        const upload = await fetch(url, {
+        // Step 2: Upload the file using the pre-signed URL
+        const upload = await fetch(uploadUrl, {
           method: "PUT",
-          body: file  // ✅ No headers = match pre-signed signature
-        });
+          body: file  // ⚠️ No headers — avoids 403 error
         });
 
         console.log("📦 Upload response:", upload);
@@ -123,10 +126,8 @@
     const fileInput = document.getElementById('file-upload');
     const uploadBtn = document.querySelector('.upload-btn');
 
-    // Trigger file input from button
     uploadBtn.addEventListener('click', () => fileInput.click());
 
-    // Handle file upload
     fileInput.addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (file) uploadFile(file);
