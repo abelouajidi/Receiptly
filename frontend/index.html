@@ -77,15 +77,16 @@
     }
 
     .upload-btn {
-      background-color: #3265b3;
-      color: #fff;
-      border: none;
+      background-color: transparent; /* make background transparent */
+      color: #3265b3;                /* optional: make text visible */
+      border: 2px solid #3265b3;     /* optional: visible border */
       padding: 12px 24px;
       font-size: 14px;
       font-weight: bold;
       border-radius: 8px;
       cursor: pointer;
     }
+
 
     .upload-btn:hover {
       background-color: #2c5aa1;
@@ -102,7 +103,7 @@
     <div class="upload-text">DRAG & DROP</div>
     <div class="sub-text">TO UPLOAD</div>
     <input type="file" id="file-upload" class="file-input" />
-    <button class="upload-btn" type="button">OR, SELECT FILES</button>
+    <button class="upload-btn" type="button">SELECT FILES</button>
   </div>
 
   <!-- File upload script -->
