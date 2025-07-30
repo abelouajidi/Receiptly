@@ -32,7 +32,8 @@ def lambda_handler(event, context):
             ClientMethod='put_object',
             Params={
                 'Bucket': BUCKET,
-                'Key': object_key
+                'Key': object_key,
+                'ContentType': 'image/jpeg'
             },
             ExpiresIn=300
         )
