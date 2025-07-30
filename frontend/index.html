@@ -4,11 +4,25 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Receiptly — Smart Receipt Parser</title>
+
+  <!-- Load particles.js -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
   <style>
+    /* Fullscreen background container for particles */
+    #particles-js {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #0a1c46;
+      z-index: -1;
+    }
+
     body {
       margin: 0;
       font-family: "Segoe UI", sans-serif;
-      background: #a6a6a6 url('https://www.transparenttextures.com/patterns/carbon-fibre-big.png') repeat;
       color: white;
       display: flex;
       justify-content: center;
@@ -24,8 +38,9 @@
       text-align: center;
       max-width: 400px;
       width: 100%;
-      border: 2px;
+      border: 2px dashed #3d5472;
       cursor: pointer;
+      z-index: 1;
     }
 
     .logo {
@@ -34,6 +49,12 @@
       object-fit: cover;
       object-position: center;
       display: block;
+    }
+
+    .upload-icon {
+      font-size: 48px;
+      color: #5c9eff;
+      margin-bottom: 16px;
     }
 
     .upload-text {
@@ -70,14 +91,20 @@
   </style>
 </head>
 <body>
+
+  <!-- Particle background container -->
+  <div id="particles-js"></div>
+
   <div class="upload-container" onclick="document.getElementById('file-upload').click();">
     <img src="logo.png" alt="Receiptly Logo" class="logo"/>
+    <div class="upload-icon">⬆️</div>
     <div class="upload-text">DRAG & DROP</div>
     <div class="sub-text">TO UPLOAD</div>
     <input type="file" id="file-upload" class="file-input" />
     <button class="upload-btn" type="button">OR, SELECT FILES</button>
   </div>
 
+  <!-- File upload script -->
   <script>
     const apiEndpoint = 'https://0jbql9s6vc.execute-api.us-east-1.amazonaws.com/upload-url';
 
@@ -86,7 +113,6 @@
       console.log("📤 Selected file:", file.name);
 
       try {
-        // Step 1: Get the pre-signed URL
         const res = await fetch(`${apiEndpoint}?filename=${fileName}`);
         const data = await res.json();
         const uploadUrl = data.upload_url;
@@ -97,10 +123,9 @@
           throw new Error(data.error || 'Could not get upload URL');
         }
 
-        // Step 2: Upload the file using the pre-signed URL
         const upload = await fetch(uploadUrl, {
           method: "PUT",
-          body: file  // ⚠️ No headers — avoids 403 error
+          body: file
         });
 
         console.log("📦 Upload response:", upload);
@@ -124,6 +149,63 @@
     fileInput.addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (file) uploadFile(file);
+    });
+  </script>
+
+  <!-- Particle.js config -->
+  <script>
+    particlesJS("particles-js", {
+      "particles": {
+        "number": {
+          "value": 60,
+          "density": {
+            "enable": true,
+            "value_area": 800
+          }
+        },
+        "color": { "value": "#ffffff" },
+        "shape": { "type": "circle" },
+        "opacity": {
+          "value": 0.4,
+          "random": false
+        },
+        "size": {
+          "value": 3,
+          "random": true
+        },
+        "line_linked": {
+          "enable": true,
+          "distance": 130,
+          "color": "#ffffff",
+          "opacity": 0.25,
+          "width": 1
+        },
+        "move": {
+          "enable": true,
+          "speed": 2,
+          "direction": "none",
+          "out_mode": "out"
+        }
+      },
+      "interactivity": {
+        "detect_on": "canvas",
+        "events": {
+          "onhover": {
+            "enable": true,
+            "mode": "grab"
+          },
+          "resize": true
+        },
+        "modes": {
+          "grab": {
+            "distance": 150,
+            "line_linked": {
+              "opacity": 0.5
+            }
+          }
+        }
+      },
+      "retina_detect": true
     });
   </script>
 </body>
