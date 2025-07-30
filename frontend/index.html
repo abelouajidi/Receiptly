@@ -97,7 +97,7 @@
   <!-- Particle background container -->
   <div id="particles-js"></div>
 
-  <div class="upload-container" onclick="document.getElementById('file-upload').click();">
+  <div class="upload-container">
     <img src="logo.png" alt="Receiptly Logo" class="logo"/>
     <div class="upload-text">DRAG & DROP</div>
     <div class="sub-text">TO UPLOAD</div>
@@ -126,7 +126,10 @@
 
         const upload = await fetch(uploadUrl, {
           method: "PUT",
-          body: file
+          body: file,
+          headers: {
+            "Content-Type": file.type  // e.g., image/jpeg
+          }
         });
 
         console.log("📦 Upload response:", upload);
