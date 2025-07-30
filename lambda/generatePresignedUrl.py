@@ -3,7 +3,7 @@ import os
 import json
 import urllib.parse
 
-s3 = boto3.client("s3", region_name="eu-west-1")
+s3 = boto3.client("s3", region_name="us-east-1")
 BUCKET = "elo-receipts"
 #
 ALLOWED_EXTENSIONS = ('.jpg', '.jpeg', '.png')
