@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Receiptly — Smart Receipt Parser</title>
 
-  <!-- Load particles.js -->
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <!-- Load tsParticles -->
+  <script src="https://cdn.jsdelivr.net/npm/tsparticles@2/tsparticles.bundle.min.js"></script>
 
   <style>
     /* Fullscreen background container for particles */
@@ -18,6 +18,7 @@
       height: 100%;
       background-color: #0a1c46;
       z-index: -1;
+      pointer-events: none;
     }
 
     body {
@@ -28,10 +29,12 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      overflow: hidden;
     }
 
     .upload-container {
-      background-color: #1c2b3b;
+      background-color: rgba(28, 43, 59, 0.8); /* semi-transparent */
+      backdrop-filter: blur(6px); /* nice blur effect */
       border-radius: 16px;
       padding: 40px 30px;
       box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
@@ -150,88 +153,57 @@
     });
   </script>
 
-  <!-- Particle.js config -->
-<script>
-  particlesJS("particles-js", {
-    "particles": {
-      "number": {
-        "value": 80,
-        "density": {
-          "enable": true,
-          "value_area": 800
+  <!-- tsParticles config -->
+  <script>
+    tsParticles.load("particles-js", {
+      background: {
+        color: "#0a1c46"
+      },
+      fpsLimit: 60,
+      interactivity: {
+        events: {
+          onClick: { enable: true, mode: "push" },
+          onHover: {
+            enable: true,
+            mode: "repulse",
+            parallax: { enable: true, force: 60, smooth: 10 }
+          },
+          resize: true
+        },
+        modes: {
+          push: { quantity: 4 },
+          repulse: { distance: 100, duration: 0.4 }
         }
       },
-      "color": { "value": "#ffffff" },
-      "shape": {
-        "type": "circle"
+      particles: {
+        color: { value: "#ffffff" },
+        links: {
+          color: "#ffffff",
+          distance: 150,
+          enable: true,
+          opacity: 0.4,
+          width: 1
+        },
+        collisions: { enable: false },
+        move: {
+          direction: "none",
+          enable: true,
+          outModes: "out",
+          random: false,
+          speed: 2,
+          straight: false
+        },
+        number: {
+          value: 80,
+          density: { enable: true, area: 800 }
+        },
+        opacity: { value: 0.5 },
+        shape: { type: "circle" },
+        size: { value: { min: 1, max: 5 } }
       },
-      "opacity": {
-        "value": 0.5,
-        "random": false
-      },
-      "size": {
-        "value": 3,
-        "random": true
-      },
-      "line_linked": {
-        "enable": true,
-        "distance": 150,
-        "color": "#ffffff",
-        "opacity": 0.4,
-        "width": 1
-      },
-      "move": {
-        "enable": true,
-        "speed": 4,
-        "direction": "none",
-        "random": false,
-        "straight": false,
-        "out_mode": "out",
-        "bounce": false
-      }
-    },
-    "interactivity": {
-      "detect_on": "canvas",
-      "events": {
-        "onhover": {
-          "enable": true,
-          "mode": "repulse"  // 👈 Pointer effect (grab, repulse, bubble)
-        },
-        "onclick": {
-          "enable": true,
-          "mode": "push"  // 👈 On click, add particles
-        },
-        "resize": true
-      },
-      "modes": {
-        "grab": {
-          "distance": 140,
-          "line_linked": {
-            "opacity": 1
-          }
-        },
-        "bubble": {
-          "distance": 200,
-          "size": 8,
-          "duration": 2,
-          "opacity": 0.8,
-          "speed": 3
-        },
-        "repulse": {
-          "distance": 120,
-          "duration": 0.4
-        },
-        "push": {
-          "particles_nb": 4
-        },
-        "remove": {
-          "particles_nb": 2
-        }
-      }
-    },
-    "retina_detect": true
-  });
-</script>
+      detectRetina: true
+    });
+  </script>
 
 </body>
 </html>
