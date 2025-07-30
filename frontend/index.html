@@ -82,7 +82,7 @@
     <div class="upload-text">DRAG & DROP</div>
     <div class="sub-text">TO UPLOAD</div>
     <input type="file" id="file-upload" class="file-input" />
-    <button class="upload-btn">OR, SELECT FILES</button>
+    <button class="upload-btn" type="button">OR, SELECT FILES</button>
   </div>
 
   <script>
@@ -90,10 +90,12 @@
 
     async function uploadFile(file) {
       const fileName = encodeURIComponent(file.name);
+      console.log("📤 Selected file:", file.name);
 
       try {
         const res = await fetch(`${apiEndpoint}?filename=${fileName}`);
         const data = await res.json();
+        console.log("🎯 Received pre-signed URL:", data.upload_url);
 
         if (!data.upload_url) {
           throw new Error(data.error || 'Could not get upload URL');
@@ -104,17 +106,27 @@
           body: file
         });
 
+        console.log("📦 Upload response:", upload);
+
         if (!upload.ok) {
-          throw new Error('Upload failed');
+          throw new Error('Upload failed with status ' + upload.status);
         }
 
         alert('✅ Upload successful!');
       } catch (err) {
+        console.error("❌ Upload error:", err);
         alert(`❌ Upload failed: ${err.message}`);
       }
     }
 
-    document.getElementById('file-upload').addEventListener('change', (e) => {
+    const fileInput = document.getElementById('file-upload');
+    const uploadBtn = document.querySelector('.upload-btn');
+
+    // Trigger file input from button
+    uploadBtn.addEventListener('click', () => fileInput.click());
+
+    // Handle file upload
+    fileInput.addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (file) uploadFile(file);
     });
