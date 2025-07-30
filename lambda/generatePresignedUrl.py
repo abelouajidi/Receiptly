@@ -5,7 +5,6 @@ import urllib.parse
 
 s3 = boto3.client("s3", region_name="us-east-1")
 BUCKET = "elo-receipts"
-#
 ALLOWED_EXTENSIONS = ('.jpg', '.jpeg', '.png')
 
 def lambda_handler(event, context):
@@ -28,19 +27,21 @@ def lambda_handler(event, context):
     object_key = f"uploads/{filename}"
 
     try:
+        # Generate presigned URL without specifying ContentType
         upload_url = s3.generate_presigned_url(
-            ClientMethod="put_object",
-            Params={"Bucket": BUCKET, "Key": object_key},
+            ClientMethod='put_object',
+            Params={
+                'Bucket': BUCKET,
+                'Key': object_key
+            },
             ExpiresIn=300
         )
 
         return {
             "statusCode": 200,
             "headers": {
-
-                
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*"  # dev only
+                "Access-Control-Allow-Origin": "*",  # Allow CORS
+                "Content-Type": "application/json"
             },
             "body": json.dumps({ "upload_url": upload_url })
         }
@@ -50,4 +51,3 @@ def lambda_handler(event, context):
             "statusCode": 500,
             "body": json.dumps({ "error": str(e) })
         }
-
