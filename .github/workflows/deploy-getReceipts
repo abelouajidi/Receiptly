@@ -1,0 +1,40 @@
+name: Deploy getReceipts Lambda
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - lambda/getReceipts.py  # Only trigger if Lambda code changes
+      - .github/workflows/deploy-getReceipts.yml
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Zip only the Lambda code for deployment
+      - name: Zip Lambda files
+        run: |
+          mkdir build
+          cp lambda/getReceipts.py build/
+          cd build
+          zip -r ../getReceipts.zip .
+
+      # Configure AWS credentials from GitHub Secrets
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      # Deploy to AWS Lambda
+      - name: Deploy to Lambda (getReceipts)
+        run: |
+          aws lambda update-function-code \
+            --function-name getReceipts \
+            --zip-file fileb://getReceipts.zip
