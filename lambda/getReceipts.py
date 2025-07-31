@@ -9,7 +9,7 @@ table = dynamodb.Table("ReceiptlyReceipts")
 def lambda_handler(event, context):
     print("EVENT:", json.dumps(event))
 
-    # Queryy string parameters (from API Gateway GET request)
+    # Queryyy string parameters (from API Gateway GET request)
     params = event.get("queryStringParameters") or {}
     merchant = params.get("merchant") if params else None
     date = params.get("date") if params else None
