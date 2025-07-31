@@ -42,3 +42,30 @@
     Mobile-optimized UI
     Real-time upload progress
 
+
+##  Architecture Diagram
+
+```mermaid
+graph TD
+  %% === Frontend ===
+  subgraph Frontend
+    A[Upload UI<br>(Browser)]
+  end
+
+  %% === AWS S3 Upload Flow ===
+  subgraph AWS
+    A -->|Pre-signed URL| B[S3 Bucket<br>uploads/]
+    B --> C[Lambda: ocrProcessor]
+    C -->|OCR Analysis| D[Textract<br>analyze_expense]
+    C -->|Save Parsed JSON| E[S3 Bucket<br>parsed/]
+    C -->|Save Summary| F[(DynamoDB<br>ReceiptlyReceipts)]
+
+    %% === API Flow for Dashboard ===
+    subgraph API
+      G[API Gateway<br>/receipts] --> H[Lambda: getReceipts]
+      H -->|Query GSIs| F
+    end
+  end
+```
+
+
